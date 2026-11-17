@@ -1,0 +1,49 @@
+{% extends 'capacitaciones/base.html' %}
+
+{% block content %}
+<section class="py-5" style="background-color: #f8f9fa; min-height: 80vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-sm-5">
+                        <h3 class="fw-bold text-center text-dark mb-4">Iniciar sesión</h3>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger py-2 px-3 small rounded-3 mb-3">
+                                Usuario o contraseña incorrectos. Por favor, reintenta.
+                            </div>
+                        {% endif %}
+
+                        <form method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label text-muted small fw-semibold mb-1">Usuario (Email)</label>
+                                <input type="text" name="username" class="form-control form-control-lg fs-6" id="id_username" placeholder="tu@email.com" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="id_password" class="form-label text-muted small fw-semibold mb-1">Contraseña</label>
+                                <input type="password" name="password" class="form-control form-control-lg fs-6" id="id_password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-danger w-100 py-2 fs-6 fw-semibold rounded-3 mb-3" style="background-color: #ff7a63; border: none;">
+                                Ingresar
+                            </button>
+                            <div class="text-center mt-3 border-top pt-3">
+                                <span class="small text-muted">¿No tienes una cuenta?</span> 
+                                <a href="{% url 'registro' %}" class="text-decoration-none small fw-bold">Regístrate aquí</a>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3 border-top pt-3">
+                            <a href="#" class="text-decoration-none small text-muted">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'capacitaciones/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Evaluación: {{ curso.titulo }}</h2>
+                <p class="text-muted mb-1">Nota mínima de aprobación: <strong>{{ examen.nota_minima_aprobacion }}%</strong></p>
+                <small class="badge bg-info text-dark">Intentos restantes: {{ intentos_restantes }}</small>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                {% for pregunta in preguntas %}
+                <div class="card shadow-sm border-0 rounded-3 mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3">
+                            <span class="badge bg-primary me-2">{{ forloop.counter }}</span>
+                            {{ pregunta.texto }} <!-- Cambiado de 'enunciado' a 'texto' -->
+                        </h5>
+                        
+                        <div class="d-flex flex-column gap-2 mt-3">
+                            {% for opcion in pregunta.opciones.all %}
+                            <div class="form-check p-3 rounded border bg-light">
+                                <input class="form-check-input ms-1 me-3" type="radio" 
+                                       name="pregunta_{{ pregunta.id }}" 
+                                       value="{{ opcion.id }}" 
+                                       id="opcion_{{ opcion.id }}" required>
+                                <label class="form-check-label w-100 fw-semibold text-dark" for="opcion_{{ opcion.id }}">
+                                    {{ opcion.texto }} <!-- Cambiado de 'texto_opcion' a 'texto' -->
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-success btn-lg fw-bold">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Enviar Evaluación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

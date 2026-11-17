@@ -1,0 +1,162 @@
+{% extends 'capacitaciones/base.html' %}
+
+{% block content %}
+
+<!-- 1. HERO SECTION (PORTADA PRINCIPAL) -->
+<section class="hero-section bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+                <span class="badge bg-success mb-3 px-3 py-2 rounded-pill fw-normal">
+                    <i class="fa-solid fa-bolt me-1"></i> Formación 100% Online
+                </span>
+                <h1 class="display-4 fw-bold text-dark mb-3">Potencia tus habilidades al siguiente nivel</h1>
+                <p class="lead text-muted mb-4">Aprende a tu propio ritmo de manera asincrónica con nuestros cursos especializados. Obtén certificados con validez y accede desde cualquier dispositivo.</p>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                    <a href="#cursos" class="btn btn-primary btn-lg px-4">Explorar Cursos</a>
+                    <a href="{% url 'canjear_codigo' %}" class="btn btn-outline-secondary btn-lg px-4">Tengo una Licencia</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop" class="img-fluid rounded-4 shadow-lg" alt="Estudiantes capacitándose">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. BENEFICIOS / POR QUÉ ELEGIRNOS -->
+<section class="py-5 bg-white" id="nosotros">
+    <div class="container">
+        <div class="row text-center gy-4">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="fa-solid fa-clock fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold">A tu propio ritmo</h4>
+                    <p class="text-muted">Sin horarios fijos. Accede al contenido las 24 horas, los 7 días de la semana.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="fa-solid fa-certificate fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold">Certificado Oficial</h4>
+                    <p class="text-muted">Al finalizar cada capacitación, descarga tu certificado avalado inmediatamente.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <i class="fa-solid fa-mobile-screen-button fa-3x text-primary mb-3"></i>
+                    <h4 class="fw-bold">Multiplataforma</h4>
+                    <p class="text-muted">Estudia cómodamente desde tu computadora, tablet o teléfono celular.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. CATÁLOGO DE CURSOS DESTACADOS -->
+<section class="py-5" id="cursos">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Nuestras Capacitaciones</h2>
+            <p class="text-muted">Elige el curso que mejor se adapte a tus objetivos</p>
+        </div>
+
+        <div class="row gy-4">
+            {% for curso in cursos %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-curso shadow-sm h-100 border-0 rounded-3">
+                    {% if curso.imagen_url %}
+                        <img src="{{ curso.imagen_url }}" class="card-img-top rounded-top" alt="{{ curso.titulo }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" class="card-img-top rounded-top" alt="Curso genérico" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge bg-light text-dark border align-self-start mb-2">100% Online</span>
+                        <h5 class="card-title fw-bold">{{ curso.titulo }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ curso.descripcion|truncatewords:20 }}</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                            <div>
+                                <small class="text-muted d-block">Inversión</small>
+                                <span class="fs-5 fw-bold text-primary">${{ curso.precio_b2c }}</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <!-- Botón Ver Detalle -->
+                                <a href="{% url 'detalle_curso' curso.id %}" class="btn btn-outline-primary btn-sm">
+                                    Detalle
+                                </a>
+                                <!-- Botón Comprar directo a Mercado Pago -->
+                                <a href="{% url 'comprar_curso' curso.id %}" class="btn btn-success btn-sm fw-semibold">
+                                    <i class="fa-solid fa-cart-shopping me-1"></i> Comprar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-4">
+                <p class="text-muted">Próximamente estaremos sumando nuevos cursos a la plataforma.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 4. PREGUNTAS FRECUENTES (FAQ) -->
+<section class="py-5 bg-white" id="faq">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Preguntas Frecuentes</h2>
+            <p class="text-muted">Resolvemos tus dudas antes de comenzar</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion shadow-sm" id="accordionFAQ">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                ¿Cómo obtengo el acceso al curso una vez abonado?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body text-muted">
+                                El acceso es automático. Si abonas por Mercado Pago, el sistema activará la capacitación en tu panel de "Mis Cursos" de forma inmediata.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                ¿Cómo canjeo un código otorgado por mi empresa?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body text-muted">
+                                Debes hacer clic en la opción "Canjear Código" en el menú superior, ingresar la clave proporcionada y el curso se vinculará a tu cuenta sin costo adicional.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                ¿Otorgan certificado de aprobación?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                            <div class="accordion-body text-muted">
+                                Sí, una vez completados todos los módulos del programa, podrás descargar tu certificado digital con firma verificada.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
